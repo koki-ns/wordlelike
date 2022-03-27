@@ -51,19 +51,27 @@ class HoldDataState extends State<HoldData> {
   }
 
   void input(char) {
-    setState(() {
-      if (columnNumber < 5) {
+    if (columnNumber < 5) {
+      setState(() {
         charsLists[rowNumber][columnNumber] = char;
         ++columnNumber;
-      }
-    });
+      });
+    }
   }
 
   void backSpace() {
     if (columnNumber >= 1) {
-      --columnNumber;
-      charsLists[rowNumber][columnNumber] = empty;
+      setState(() {
+        --columnNumber;
+        charsLists[rowNumber][columnNumber] = empty;
+      });
     }
+  }
+
+  void enter() {
+    if (columnNumber != 5) {
+      //入力終わってないエラー処理
+    } else {}
   }
 
   void reset() {
