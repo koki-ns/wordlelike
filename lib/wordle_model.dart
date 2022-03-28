@@ -1,23 +1,33 @@
+import 'words_model.dart';
+
 void main() {
   //List<String> guess = ['l', 'o', 'l', 'l', 'o'];
   // ignore: avoid_print
   //print(judge(guess));
-  List<List<String>> lists =
-      List.generate(6, (index) => List.generate(5, ((index) => 'a')));
-  print(lists);
+  List<String> guess = ['l', 'o', 'l', 'l', 'o'];
+  print(guess.join(''));
 }
 
 class WordleModel {
-  static const empty = 'Empty';
+  static const notEvaluated = 'notEvaluated';
   static const hit = 'hit';
   static const blow = 'blow';
   static const miss = 'miss';
 
-  List<String> key = ['h', 'e', 'l', 'l', 'o'];
+  List<String> key = WordsModel.chooseKey().split('');
+
+  static bool isValid(List<String> guess) {
+    return WordsModel.searchWord(guess.join(''));
+  }
+
+  void reselectKey() {
+    key = WordsModel.chooseKey().split('');
+  }
 
   List<String> judge(List<String> guess) {
     List<String> result = [miss, miss, miss, miss, miss];
     List<String> surplus = [];
+
     for (var i = 0; i < 5; i++) {
       if (guess[i] == key[i]) {
         result[i] = hit;
@@ -31,7 +41,6 @@ class WordleModel {
         result[i] = blow;
       }
     }
-
     return result;
   }
 }
