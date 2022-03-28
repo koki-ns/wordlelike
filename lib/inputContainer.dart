@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'wordle_model.dart';
 
 class InheritedData extends InheritedWidget {
   final HoldDataState data;
@@ -16,13 +17,14 @@ class InheritedData extends InheritedWidget {
 }
 
 class HoldDataState extends State<HoldData> {
-  final empty = 'empty';
-  List<List<String>> charsLists =
-      List.generate(6, (index) => List.generate(5, ((index) => 'empty')));
+  List<List<Character>> charsLists =
+      List.generate(6, (index) => List.generate(5, ((index) => Character())));
   //現在入力する行を指し示す
   int rowNumber = 0;
   //次に入力するポイントを指し示す
   int columnNumber = 0;
+
+  WordleModel model = WordleModel();
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +44,8 @@ class HoldDataState extends State<HoldData> {
   */
 
   String getChar(int row, int column) {
-    String str = charsLists[row][column];
-    if (str == empty) {
+    String str = charsLists[row][column].getChar();
+    if (str == Character.empty) {
       return ' ';
     } else {
       return str;
@@ -53,7 +55,7 @@ class HoldDataState extends State<HoldData> {
   void input(char) {
     if (columnNumber < 5) {
       setState(() {
-        charsLists[rowNumber][columnNumber] = char;
+        charsLists[rowNumber][columnNumber].setChar(char);
         ++columnNumber;
       });
     }
@@ -63,21 +65,33 @@ class HoldDataState extends State<HoldData> {
     if (columnNumber >= 1) {
       setState(() {
         --columnNumber;
-        charsLists[rowNumber][columnNumber] = empty;
+        charsLists[rowNumber][columnNumber].setChar(Character.empty);
       });
     }
   }
 
   void enter() {
-    if (columnNumber != 5) {
+    List<String> guess;
+    List<String> result;
+
+    if (columnNumber < 5) {
       //入力終わってないエラー処理
-    } else {}
+      return;
+    } else {
+      guess =
+          List.generate(5, (index) => charsLists[rowNumber][index].getChar());
+      if (!WordleModel.isValid(guess)) {
+        //not in Word List
+        return;
+      }
+      result = model.judge(guess);
+    }
   }
 
   void reset() {
     for (var list in charsLists) {
       for (var i = 0; i < 5; i++) {
-        list.add(empty);
+        list.add(Character());
       }
     }
   }
@@ -94,4 +108,41 @@ class HoldData extends StatefulWidget {
 
   @override
   HoldDataState createState() => new HoldDataState();
+}
+
+class Character {
+  static const String empty = 'empty';
+
+  String char;
+  String status;
+
+  Character([this.char = empty, this.status = WordleModel.notEvaluated]);
+
+  bool isEmpty() {
+    if (char == empty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  String getChar() {
+    if (char == empty) {
+      return ' ';
+    } else {
+      return char;
+    }
+  }
+
+  String getStatus() {
+    return status;
+  }
+
+  void setChar(String char) {
+    this.char = char;
+  }
+
+  void setStatus(String status) {
+    this.status = status;
+  }
 }
