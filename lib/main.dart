@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'inputContainer.dart';
-import 'inputBoxes.dart';
+import 'inherited_data.dart';
+import 'input_boxes.dart';
 import 'keyboard.dart';
 
 void main() {
@@ -21,7 +21,18 @@ class MyApp extends StatelessWidget {
         ),
         body: Center(
             child: HoldData(
-          child: Column(children: [InputBoxes(), KeyBoardWidget()]),
+          child: Container(
+            color: KeyBoardWidget.bgColor,
+            child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Expanded(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: InputBoxes(),
+                ),
+              ),
+              KeyBoardWidget()
+            ]),
+          ),
         )),
       ),
     );

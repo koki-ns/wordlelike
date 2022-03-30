@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'words_model.dart';
 
 void main() {
@@ -9,10 +10,10 @@ void main() {
 }
 
 class WordleModel {
-  static const notEvaluated = 'notEvaluated';
-  static const hit = 'hit';
-  static const blow = 'blow';
-  static const miss = 'miss';
+  static const int notEvaluated = 0;
+  static const int hit = 3;
+  static const int blow = 2;
+  static const int miss = 1;
 
   List<String> key = WordsModel.chooseKey().split('');
 
@@ -20,12 +21,16 @@ class WordleModel {
     return WordsModel.searchWord(guess.join(''));
   }
 
+  static bool isWin(List<int> result) {
+    return listEquals(result, List.generate(5, (index) => hit));
+  }
+
   void reselectKey() {
     key = WordsModel.chooseKey().split('');
   }
 
-  List<String> judge(List<String> guess) {
-    List<String> result = [miss, miss, miss, miss, miss];
+  List<int> judge(List<String> guess) {
+    List<int> result = [miss, miss, miss, miss, miss];
     List<String> surplus = [];
 
     for (var i = 0; i < 5; i++) {
