@@ -49,3 +49,4 @@ app.*.map.json
 *.py
 lib/keys
 lib/words
+Podfile.lock
