@@ -135,7 +135,7 @@ class HoldDataState extends State<HoldData> {
         //勝ちを伝える処理
         isEvaluating = false;
       });
-    } else if (rowNumber == 6) {
+    } else if (rowNumber == 5) {
       setState(() {
         isPlaying = false;
         //負けを伝える処理
