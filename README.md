@@ -1,3 +1,3 @@
 # wordlelike
-flutterで作ったwordleのクローンゲーム
+flutterで作ったwordleのクローンゲーム  
 機能に乏しい
